@@ -1,0 +1,239 @@
+/* General Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    background: url('/static/rectangle-neon-3840x2160-16717.jpg') center/cover no-repeat;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200vh;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    z-index: -1;
+}
+
+.task-wrapper {
+    background-color: #0e010185;
+    border-radius: 20px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    width: 90%;
+    max-width: 600px;
+    margin: auto;
+    transition: all 0.3s ease;
+}
+
+.task-wrapper:hover {
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    text-align: center;
+    color: #e7dfdf;
+    font-weight: 400;
+    margin-bottom: 25px;
+    font-size: 2em;
+}
+
+/* Project Container */
+#project-container {
+    margin-top: 20px;
+}
+
+.project {
+    background: linear-gradient(135deg, #e2e6ead0, #0f39648e);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 25px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.project:hover {
+    background: linear-gradient(135deg, #d2d6da, #e2e6ea);
+}
+
+.project h3 {
+    margin: 0 0 15px;
+    font-size: 1.4em;
+    color: #081729;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.project h3 .delete-project-btn {
+    background-color: transparent;
+    border: none;
+    color: #ff6b6b;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.project h3 .delete-project-btn:hover {
+    color: #ff5252;
+}
+
+/* Task Container */
+.tasks {
+    margin-top: 15px;
+}
+
+.task {
+    background-color: #ffffffbe;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.task:hover {
+    background-color: #f9f9f9;
+}
+
+.task span {
+    font-size: 1em;
+    color: #220303;
+}
+
+.task button {
+    background-color: #ff6b6b;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    padding: 8px 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.task button:hover {
+    background-color: #ff5252;
+}
+
+/* Button Container */
+.button-container {
+    margin-top: 35px;
+    text-align: center;
+}
+
+.button-container input {
+    margin-bottom: 15px;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    width: calc(100% - 32px);
+    box-sizing: border-box;
+    font-size: 1em;
+    transition: all 0.3s ease;
+    background-color: #f9f9f9;
+}
+
+.button-container input:focus {
+    border-color: #007bff;
+        outline: none;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
+.button-container button {
+    background-color: #007bff;
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    padding: 12px 20px;
+    cursor: pointer;
+    margin: 0 5px;
+    font-size: 1em;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.button-container button:hover {
+    background-color: #0056b3;
+}
+
+/* Additional Styles for Modern Look */
+button:focus, input:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+
+input {
+    background-color: #f9f9f9;
+}
+
+button {
+    font-size: 1em;
+    font-weight: 500;
+}
+
+.project h3 .delete-project-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.project h3 .delete-project-btn:hover {
+    color: #ff5252;
+    background-color: rgba(255, 107, 107, 0.1);
+    transform: scale(1.1);
+}
+
+.project h3 .delete-project-btn:before {
+    content: "🗑";
+    margin-right: 0;
+}
+
+/* Scrollbar Styling */
+body::-webkit-scrollbar {
+    width: 12px;
+}
+
+body::-webkit-scrollbar-track {
+    background: #f1f3f5;
+    border-radius: 10px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #007bff;
+    border-radius: 10px;
+    border: 3px solid #f1f3f5;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .task-wrapper {
+        padding: 20px;
+        width: 90%;
+    }
+
+    .project {
+        padding: 15px;
+    }
+
+    .button-container input, .button-container button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .button-container button {
+        margin: 10px 0;
+    }
+}

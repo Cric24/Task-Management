@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management</title>
+    <link rel="stylesheet" href="/static/index.css">
+</head>
+<body>
+    <div class="task-wrapper">
+        <h1>Task Management</h1>
+        <div id="project-container"></div>
+        <div class="button-container">
+            <input type="text" id="project-name" placeholder="Project name">
+            <input type="text" id="task-input" placeholder="Task">
+            <button onclick="addProject()">Add Project</button>
+            <button onclick="addTask()">Add Task</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            fetch('/get_projects')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        displayProjects(data.projects);
+                    } else {
+                        alert('Failed to load projects.');
+                    }
+                });
+        });
+
+        function displayProjects(projects) {
+            const projectContainer = document.getElementById('project-container');
+            projectContainer.innerHTML = '';
+
+            projects.forEach(project => {
+                const projectDiv = document.createElement('div');
+                projectDiv.className = 'project';
+                projectDiv.innerHTML = `
+                    <h3>${project.name}</h3>
+                    <div class="tasks" id="tasks-${project.id}"></div>
+                    <button onclick="deleteProject(${project.id})">Delete Project</button>
+                `;
+                projectContainer.appendChild(projectDiv);
+
+                project.tasks.forEach(task => {
+                    addTaskToDOM(project.id, task.id, task.content);
+                });
+            });
+        }
+
+        function addProject() {
+            const projectName = document.getElementById('project-name').value;
+            if (projectName.trim() === '') {
+                alert('Please enter a project name.');
+                return;
+            }
+
+            fetch('/create_project', {
+                method: 'POST',
+                body: JSON.stringify({ name: projectName }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    location.reload();
+                } else {
+                    alert('Failed to add project. Please try again.');
+                }
+            });
+        }
+
+        function addTask() {
+            const projectName = document.getElementById('project-name').value;
+            const taskContent = document.getElementById('task-input').value;
+
+            if (projectName.trim() === '' || taskContent.trim() === '') {
+                alert('Please enter project name and task.');
+                return;
+            }
+
+            fetch('/get_projects')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        const project = data.projects.find(p => p.name === projectName);
+                        if (!project) {
+                            alert('Project not found.');
+                            return;
+                        }
+
+                        fetch('/create_task', {
+                            method: 'POST',
+                            body: JSON.stringify({ project_id: project.id, content: taskContent }),
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                location.reload();
+                            } else {
+                                alert('Failed to add task. Please try again.');
+                            }
+                        });
+                    } else {
+                        alert('Failed to retrieve projects.');
+                    }
+                });
+        }
+
+        function addTaskToDOM(projectId, taskId, taskContent) {
+            const tasksDiv = document.getElementById(`tasks-${projectId}`);
+            const taskDiv = document.createElement('div');
+            taskDiv.className = 'task';
+            taskDiv.innerHTML = `
+                <span>${taskContent}</span>
+                <button onclick="deleteTask(${taskId})">Delete</button>
+            `;
+            tasksDiv.appendChild(taskDiv);
+        }
+
+        function deleteTask(taskId) {
+            fetch(`/delete_task/${taskId}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    location.reload();
+                } else {
+                    alert('Failed to delete task. Please try again.');
+                }
+            });
+        }
+
+        function deleteProject(projectId) {
+            fetch(`/delete_project/${projectId}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    location.reload();
+                } else {
+                    alert('Failed to delete project. Please try again.');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
